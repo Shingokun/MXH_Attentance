@@ -1,4 +1,4 @@
-package com.example.mhx_attendance
+package vn.mhx.attendance
 
 import io.flutter.embedding.android.FlutterActivity
 

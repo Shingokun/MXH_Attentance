@@ -1,0 +1,10 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Giai đoạn 0: deny-all. Mở rộng theo role ở Giai đoạn 1 (AUTH-05).
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
