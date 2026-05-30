@@ -5,19 +5,6 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/models/user_role.dart';
 import '../providers/auth_providers.dart';
 
-class SuperAdminHomeScreen extends ConsumerWidget {
-  const SuperAdminHomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return _RoleHomeScaffold(
-      title: AppStrings.homeSuperAdmin,
-      role: UserRole.superAdmin,
-      color: Colors.red.shade700,
-    );
-  }
-}
-
 class LocalAdminHomeScreen extends ConsumerWidget {
   const LocalAdminHomeScreen({super.key});
 

@@ -1,6 +1,23 @@
 {
   "indexes": [
     {
+      "collectionGroup": "campaigns",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "is_active", "order": "ASCENDING" },
+        { "fieldPath": "year", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "activities",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "campaign_id", "order": "ASCENDING" },
+        { "fieldPath": "neighborhood_id", "order": "ASCENDING" },
+        { "fieldPath": "check_in_time", "order": "DESCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "attendances",
       "queryScope": "COLLECTION",
       "fields": [

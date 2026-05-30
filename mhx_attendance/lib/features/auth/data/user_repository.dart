@@ -25,6 +25,19 @@ class UserRepository {
     return AppUser.fromFirestore(snap);
   }
 
+  /// Lọc `is_active` trên client để tránh composite index (`role` + `is_active`).
+  Stream<List<AppUser>> watchLocalAdmins() {
+    return _users
+        .where('role', isEqualTo: 'LOCAL_ADMIN')
+        .snapshots()
+        .map((snap) {
+          return snap.docs
+              .map(AppUser.fromFirestore)
+              .where((u) => u.isActive)
+              .toList();
+        });
+  }
+
   /// Tạo `users/{uid}` nếu Cloud Function chưa chạy (deploy trễ / user cũ).
   /// Khớp schema [onAuthUserCreate].
   Future<bool> ensureInitialProfile(User firebaseUser) async {

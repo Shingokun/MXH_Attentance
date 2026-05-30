@@ -8,7 +8,9 @@
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "seed:neighborhoods": "node scripts/seed-neighborhoods.mjs",
+    "seed:neighborhoods:emulator": "node scripts/seed-neighborhoods.mjs --emulator"
   },
   "engines": {
     "node": "20"

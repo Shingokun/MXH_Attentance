@@ -5,6 +5,7 @@ import 'core/constants/app_colors.dart';
 import 'core/constants/app_strings.dart';
 import 'core/router/app_router.dart';
 import 'features/auth/presentation/providers/auth_providers.dart';
+import 'features/campaigns/presentation/providers/campaign_providers.dart';
 
 class MhxApp extends ConsumerWidget {
   const MhxApp({super.key});
@@ -12,6 +13,7 @@ class MhxApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(profileBootstrapProvider);
+    ref.watch(campaignSessionBootstrapProvider);
     final router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(
