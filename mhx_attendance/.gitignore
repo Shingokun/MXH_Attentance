@@ -15,7 +15,10 @@ android/.gradle/
 android/**/local.properties
 android/**/key.properties
 *.keystore
+# Firebase / secrets (không commit)
 android/app/google-services.json
+functions/.secrets/
+**/*-firebase-adminsdk*.json
 
 # iOS / macOS (chưa dùng — giữ khi mở rộng)
 ios/Pods/

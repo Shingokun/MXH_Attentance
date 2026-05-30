@@ -12,7 +12,80 @@
 | CI `.github/workflows/flutter_ci.yml` | OK |
 | Chạy thử Windows / Android | OK (trên máy dev) |
 
-**Giai đoạn 1:** Auth hoàn tất — xem [README.md](README.md). **Tiếp theo:** Giai đoạn 2 — Chiến dịch.
+**Giai đoạn 1:** Auth hoàn tất — xem [README.md](README.md).
+
+**Giai đoạn 2:** Quản lý chiến dịch hoàn tất (`CAM-01`–`CAM-06`). **Tiếp theo:** Giai đoạn 3 — Khu phố & Tài khoản.
+
+## Giai đoạn 2 — Chuẩn bị & kiểm thử nhanh
+
+### Điều kiện
+
+- Đăng nhập bằng tài khoản **SUPER_ADMIN** (script `functions/scripts/set-user-role.mjs` hoặc Firestore `users/{uid}.role`).
+- Deploy rules (đã có quyền `campaigns` / `campaign_neighborhoods` cho Super Admin).
+
+### Chạy app
+
+```powershell
+cd mhx_attendance
+flutter run -d windows
+```
+
+Super Admin → **Quản lý chiến dịch** → danh sách (Firestore `campaigns`, sắp theo `year` giảm dần).
+
+### Tạo dữ liệu mẫu (Emulator hoặc production)
+
+Document ID = `{code}-{year}` (vd. `MHX-2026`, `TET-2026` — mã viết tắt 2–8 ký tự):
+
+| Field | Ví dụ |
+|-------|--------|
+| `name` | Mùa Hè Xanh 2026 |
+| `year` | `2026` |
+| `start_date` | Timestamp |
+| `end_date` | Timestamp |
+| `is_active` | `true` |
+| `created_by` | uid Super Admin |
+| `created_at` | server timestamp |
+
+### Deploy index (nếu query báo thiếu index)
+
+```powershell
+firebase deploy --only firestore:indexes
+```
+
+### Thứ tự implement đề xuất
+
+1. `CAM-02` — Form tạo chiến dịch (gọi `CampaignRepository.createCampaign`)
+2. `CAM-05` — Toggle `is_active`
+3. `CAM-03` — Gán Bí thư / `campaign_neighborhoods` (cần collection `neighborhoods` từ Giai đoạn 3 hoặc seed sẵn)
+4. `CAM-04` — Sửa chiến dịch (chặn nếu đã có `activities`)
+5. `CAM-06` — `selectedCampaignIdProvider` + redirect sau login
+
+### Seed `neighborhoods` mẫu (CAM-03) — không cần Console thủ công
+
+Script: `functions/scripts/seed-neighborhoods.mjs` (tạo KP01–KP05).
+
+**Firestore cloud** (app đang trỏ production `mhx-attendance-dev`):
+
+```powershell
+cd mhx_attendance/functions
+firebase login
+npm run seed:neighborhoods
+```
+
+**Emulator** (terminal 1: `firebase emulators:start`; terminal 2):
+
+```powershell
+cd mhx_attendance/functions
+npm run seed:neighborhoods:emulator
+```
+
+Xem dữ liệu: [Firebase Console → Firestore](https://console.firebase.google.com/project/mhx-attendance-dev/firestore) hoặc Emulator UI `http://localhost:4000`.
+
+Dropdown **Bí thư** cần thêm user `LOCAL_ADMIN`:
+
+```powershell
+node scripts/set-user-role.mjs <UID_LOCAL_ADMIN> LOCAL_ADMIN
+```
 
 ## Flutter không nhận lệnh `flutter` (PATH)
 

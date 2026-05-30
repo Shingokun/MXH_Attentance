@@ -9,6 +9,7 @@
 ## 📋 Mục lục
 
 - [Tổng quan công nghệ](#-tổng-quan-công-nghệ)
+- [Wireframes & IA (bản đồ màn hình)](#-wireframes--ia-bản-đồ-màn-hình)
 - [Mô hình Chiến dịch](#-mô-hình-chiến-dịch)
 - [Phân quyền người dùng](#-phân-quyền-người-dùng)
 - [Cấu trúc mã định danh & QR](#-cấu-trúc-mã-định-danh--luồng-qr)
@@ -36,6 +37,19 @@
 | Phân phối nội bộ | Firebase App Distribution | Test trước khi lên store |
 
 **Thiết kế UI:** Material Design 3 · Màu chủ đạo `#1565C0` (Blue 800)
+
+---
+
+## 🗺️ Wireframes & IA (bản đồ màn hình)
+
+Trước khi code UI mới, xem **[docs/WIREFRAMES.md](docs/WIREFRAMES.md)**:
+
+- Screen ID (`SCR-CAM-01`, `SCR-TN-01`…) gắn với task README
+- Sơ đồ điều hướng theo **Super Admin / Local Admin / User**
+- Wireframe ASCII từng màn hình chính
+- Trạng thái ✅ / 🟡 / ⬜ và route đề xuất
+
+Giúp tránh làm UI “lạc” giữa các giai đoạn.
 
 ---
 
@@ -181,7 +195,8 @@ Cloud Function tính điểm → cập nhật Firestore realtime
 
 ```jsonc
 {
-  "campaign_id": "MHX-2026",              // PK — VD: MHX-2025, MHX-2026
+  "campaign_id": "MHX-2026",              // PK — {code}-{year} (VD: MHX-2026, TET-2026)
+  "code": "MHX",                          // Mã viết tắt do Super Admin nhập
   "name": "Mùa Hè Xanh 2026",
   "year": 2026,
   "start_date": "Timestamp",
@@ -432,17 +447,17 @@ Danh sách thiếu nhi và danh sách đoàn viên được thiết kế thành 
 ---
 
 ### 🗓️ Giai đoạn 2 — Quản lý Chiến dịch (Super Admin)
-- [ ] `CAM-01` Màn hình danh sách chiến dịch (tất cả năm, lọc theo trạng thái)
-- [ ] `CAM-02` Form tạo chiến dịch mới (tên, năm, thời gian bắt đầu/kết thúc)
-- [ ] `CAM-03` Thêm Bí Thư (Local Admin) phụ trách từng khu phố vào chiến dịch
-- [ ] `CAM-04` Chỉnh sửa thông tin chiến dịch (chưa có hoạt động)
-- [ ] `CAM-05` Kích hoạt / kết thúc chiến dịch (`is_active`)
-- [ ] `CAM-06` Màn hình chọn chiến dịch khi đăng nhập (nếu có nhiều chiến dịch đang hoạt động)
+- [x] `CAM-01` Màn hình danh sách chiến dịch (tất cả năm, lọc theo trạng thái)
+- [x] `CAM-02` Form tạo chiến dịch mới (tên, năm, thời gian bắt đầu/kết thúc)
+- [x] `CAM-03` Thêm Bí Thư (Local Admin) phụ trách từng khu phố vào chiến dịch
+- [x] `CAM-04` Chỉnh sửa thông tin chiến dịch (chưa có hoạt động)
+- [x] `CAM-05` Kích hoạt / kết thúc chiến dịch (`is_active`)
+- [x] `CAM-06` Màn hình chọn chiến dịch khi đăng nhập (nếu có nhiều chiến dịch đang hoạt động)
 
 ---
 
 ### 🏘️ Giai đoạn 3 — Quản lý Khu phố & Tài khoản (Super Admin)
-- [ ] `SA-01` Màn hình dashboard Super Admin (thống kê tổng theo chiến dịch đang chọn)
+- [ ] `SA-01` Màn hình dashboard Super Admin (thống kê tổng theo chiến dịch đang chọn) — shell + dashboard 🟡
 - [ ] `SA-02` Tạo / chỉnh sửa thông tin khu phố
 - [ ] `SA-03` Danh sách Local Admin (tìm kiếm, lọc trạng thái)
 - [ ] `SA-04` Cấp tài khoản Local Admin (nhập email Google → set Custom Claim)
@@ -458,7 +473,7 @@ Danh sách thiếu nhi và danh sách đoàn viên được thiết kế thành 
 - [ ] `TN-02` Form thêm thiếu nhi mới
 - [ ] `TN-03` Form chỉnh sửa thông tin thiếu nhi
 - [ ] `TN-04` Ẩn thiếu nhi (`is_active = false`) — không xoá cứng
-- [ ] `TN-05` Trang chi tiết thiếu nhi (thông tin, tổng điểm, tab lịch sử + biểu đồ)
+- [ ] `TN-05` Trang chi tiết thiếu nhi (thông tin cá nhân, tổng điểm, tab lịch sử + biểu đồ)
 
 **Trang Đoàn Viên:**
 - [ ] `DV-01` Danh sách đoàn viên khu phố (tìm kiếm, lọc trạng thái)

@@ -12,15 +12,18 @@ service cloud.firestore {
     }
 
     function isSuperAdmin() {
-      return claimRole() == 'SUPER_ADMIN';
+      return claimRole() == 'SUPER_ADMIN'
+        || (userExists() && isActiveAccount() && userDoc().role == 'SUPER_ADMIN');
     }
 
     function isLocalAdmin() {
-      return claimRole() == 'LOCAL_ADMIN';
+      return claimRole() == 'LOCAL_ADMIN'
+        || (userExists() && isActiveAccount() && userDoc().role == 'LOCAL_ADMIN');
     }
 
     function isUser() {
-      return claimRole() == 'USER';
+      return claimRole() == 'USER'
+        || (userExists() && isActiveAccount() && userDoc().role == 'USER');
     }
 
     function isSelf(uid) {
