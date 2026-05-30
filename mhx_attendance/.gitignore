@@ -23,7 +23,8 @@ ios/Podfile.lock
 ios/Runner/GoogleService-Info.plist
 **/Flutter/.last_build_id
 
-# Firebase
+# Firebase (repo public — không commit key thật)
+lib/firebase_options.dart
 .firebase/
 firebase-debug.log
 firebase-debug.*.log

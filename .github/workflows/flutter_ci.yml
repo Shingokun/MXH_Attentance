@@ -2,9 +2,9 @@ name: Flutter CI
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, develop, 'feature/**']
   pull_request:
-    branches: [main, master]
+    branches: [main, master, develop]
 
 jobs:
   analyze-and-test:
@@ -20,6 +20,12 @@ jobs:
         with:
           channel: stable
           cache: true
+
+      - name: Prepare Firebase options (CI placeholder only)
+        run: |
+          if [ ! -f lib/firebase_options.dart ]; then
+            cp lib/firebase_options.dart.example lib/firebase_options.dart
+          fi
 
       - name: Install dependencies
         run: flutter pub get

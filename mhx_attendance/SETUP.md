@@ -42,9 +42,12 @@ cd android
 
 Thêm SHA-1 debug vào Firebase Console → Project settings → app Android.
 
-## File không commit (`.gitignore`)
+## File không commit (repo **public**)
 
+- `lib/firebase_options.dart` — tạo local: `flutterfire configure --project=mhx-attendance-dev`
 - `android/app/google-services.json`
 - `functions/node_modules/`, `functions/lib/`
 
-Máy dev mới: chạy `flutterfire configure --project=mhx-attendance-dev`.
+Mẫu: `lib/firebase_options.dart.example`. Chi tiết: [SECURITY.md](SECURITY.md).
+
+**Nếu key đã từng push lên GitHub:** giới hạn hoặc rotate API key trên Google Cloud (xem SECURITY.md).
