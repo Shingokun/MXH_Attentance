@@ -416,18 +416,18 @@ Danh sách thiếu nhi và danh sách đoàn viên được thiết kế thành 
 - [x] `SETUP-06` GitHub Actions CI (`flutter analyze`, `flutter test`)
 - [x] `SETUP-07` Cấu trúc `lib/core/`, `lib/features/`, `lib/shared/`
 
-> Chi tiết: [SETUP.md](SETUP.md)
+> Chi tiết: [SETUP.md](SETUP.md) 
 
 ---
 
 ### 🔐 Giai đoạn 1 — Xác thực & Phân quyền
-- [ ] `AUTH-01` Tích hợp Google Sign-In với Firebase Auth
-- [ ] `AUTH-02` Cloud Function: tự động gán role mặc định `USER` khi tài khoản mới tạo
-- [ ] `AUTH-03` Màn hình đăng nhập (splash + Google button)
-- [ ] `AUTH-04` Logic redirect sau đăng nhập theo role (Super Admin / Local Admin / User)
-- [ ] `AUTH-05` Viết Firestore Security Rules cho tất cả collections
-- [ ] `AUTH-06` Xử lý tài khoản bị khoá (`is_active = false`)
-- [ ] `AUTH-07` Màn hình thông báo "Tài khoản chưa được cấp quyền"
+- [x] `AUTH-01` Tích hợp Google Sign-In với Firebase Auth
+- [x] `AUTH-02` Cloud Function: tự động gán role mặc định `USER` khi tài khoản mới tạo
+- [x] `AUTH-03` Màn hình đăng nhập (splash + Google button)
+- [x] `AUTH-04` Logic redirect sau đăng nhập theo role (Super Admin / Local Admin / User)
+- [x] `AUTH-05` Viết Firestore Security Rules cho tất cả collections
+- [x] `AUTH-06` Xử lý tài khoản bị khoá (`is_active = false`)
+- [x] `AUTH-07` Màn hình thông báo "Tài khoản chưa được cấp quyền"
 
 ---
 

@@ -2,9 +2,169 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Giai đoạn 0: deny-all. Mở rộng theo role ở Giai đoạn 1 (AUTH-05).
-    match /{document=**} {
-      allow read, write: if false;
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function claimRole() {
+      return isSignedIn() ? request.auth.token.role : null;
+    }
+
+    function isSuperAdmin() {
+      return claimRole() == 'SUPER_ADMIN';
+    }
+
+    function isLocalAdmin() {
+      return claimRole() == 'LOCAL_ADMIN';
+    }
+
+    function isUser() {
+      return claimRole() == 'USER';
+    }
+
+    function isSelf(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function userExists() {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    }
+
+    function isActiveAccount() {
+      return userExists() && userDoc().is_active == true;
+    }
+
+    function sameNeighborhood(neighborhoodId) {
+      return userExists()
+        && userDoc().neighborhood_id == neighborhoodId;
+    }
+
+    function onlyProfileFields() {
+      let keys = request.resource.data.diff(resource.data).affectedKeys();
+      return keys.hasOnly([
+        'full_name',
+        'photo_url',
+        'device_token',
+      ]);
+    }
+
+    // --- users (AUTH-05) ---
+    match /users/{userId} {
+      allow read: if isSelf(userId)
+        || (isSignedIn() && isSuperAdmin())
+        || (isSignedIn() && isLocalAdmin() && isActiveAccount()
+            && resource.data.neighborhood_id != null
+            && sameNeighborhood(resource.data.neighborhood_id));
+
+      // Cho phép tạo hồ sơ lần đầu khi CF chưa chạy (fallback app).
+      allow create: if isSelf(userId)
+        && !exists(/databases/$(database)/documents/users/$(userId))
+        && request.resource.data.uid == userId
+        && request.resource.data.role == 'USER'
+        && request.resource.data.is_active == true
+        && request.resource.data.email is string
+        && request.resource.data.full_name is string;
+
+      allow update: if isSuperAdmin()
+        || (isSelf(userId) && isActiveAccount() && onlyProfileFields());
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // --- campaigns ---
+    match /campaigns/{campaignId} {
+      allow read: if isSignedIn() && isActiveAccount();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // --- neighborhoods ---
+    match /neighborhoods/{neighborhoodId} {
+      allow read: if isSignedIn() && isActiveAccount();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // --- campaign_neighborhoods ---
+    match /campaign_neighborhoods/{docId} {
+      allow read: if isSignedIn() && isActiveAccount();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // --- members ---
+    match /members/{memberId} {
+      allow read: if isSignedIn() && isActiveAccount() && (
+        isSuperAdmin()
+        || (isLocalAdmin() && sameNeighborhood(resource.data.neighborhood_id))
+        || (isUser() && resource.data.account_uid == request.auth.uid)
+      );
+
+      allow create: if isLocalAdmin()
+        && isActiveAccount()
+        && sameNeighborhood(request.resource.data.neighborhood_id);
+
+      allow update: if isSuperAdmin()
+        || (isLocalAdmin()
+            && isActiveAccount()
+            && sameNeighborhood(resource.data.neighborhood_id)
+            && sameNeighborhood(request.resource.data.neighborhood_id));
+
+      allow delete: if false;
+    }
+
+    // --- activities ---
+    match /activities/{activityId} {
+      allow read: if isSignedIn() && isActiveAccount();
+
+      allow create: if isActiveAccount() && (
+        isSuperAdmin()
+        || (isLocalAdmin()
+            && request.resource.data.scope == 'LOCAL'
+            && sameNeighborhood(request.resource.data.neighborhood_id))
+      );
+
+      allow update, delete: if isSuperAdmin()
+        || (isLocalAdmin()
+            && isActiveAccount()
+            && resource.data.scope == 'LOCAL'
+            && sameNeighborhood(resource.data.neighborhood_id));
+    }
+
+    // --- activity_registrations ---
+    match /activity_registrations/{registrationId} {
+      allow read: if isSignedIn() && isActiveAccount() && (
+        isSuperAdmin()
+        || isLocalAdmin()
+        || (isUser() && resource.data.member_id != null)
+      );
+
+      allow create: if isUser()
+        && isActiveAccount()
+        && request.resource.data.member_id != null;
+
+      allow update, delete: if isSuperAdmin() || isLocalAdmin();
+    }
+
+    // --- attendances ---
+    match /attendances/{attendanceId} {
+      allow read: if isSignedIn() && isActiveAccount() && (
+        isSuperAdmin()
+        || (isLocalAdmin() && sameNeighborhood(resource.data.neighborhood_id))
+        || (isUser() && resource.data.member_id != null)
+      );
+
+      allow create: if isActiveAccount() && (
+        isSuperAdmin()
+        || (isLocalAdmin() && sameNeighborhood(request.resource.data.neighborhood_id))
+        || (isUser()
+            && userDoc().temp_attendance_permission == true
+            && sameNeighborhood(request.resource.data.neighborhood_id))
+      );
+
+      allow update, delete: if isSuperAdmin();
     }
   }
 }
