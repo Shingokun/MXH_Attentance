@@ -1,0 +1,30 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "attendances",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "campaign_id", "order": "ASCENDING" },
+        { "fieldPath": "neighborhood_id", "order": "ASCENDING" },
+        { "fieldPath": "check_in_time", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "attendances",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "activity_id", "order": "ASCENDING" },
+        { "fieldPath": "member_id", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "attendances",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "member_id", "order": "ASCENDING" },
+        { "fieldPath": "check_in_time", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

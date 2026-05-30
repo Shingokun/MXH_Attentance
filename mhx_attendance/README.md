@@ -407,14 +407,16 @@ Danh sách thiếu nhi và danh sách đoàn viên được thiết kế thành 
 
 ## ✅ Danh sách Task phát triển
 
-### 🔧 Giai đoạn 0 — Cài đặt dự án
-- [ ] `SETUP-01` Khởi tạo Flutter project (`flutter create mhx_attendance`)
-- [ ] `SETUP-02` Tạo Firebase project, bật Auth / Firestore / Functions / FCM
-- [ ] `SETUP-03` Cấu hình `google-services.json` (Android) và `GoogleService-Info.plist` (iOS)
-- [ ] `SETUP-04` Cài đặt các Flutter packages (`pubspec.yaml`)
-- [ ] `SETUP-05` Cài đặt Firebase Emulator Suite cho môi trường dev local
-- [ ] `SETUP-06` Thiết lập GitHub repo và GitHub Actions CI/CD cơ bản
-- [ ] `SETUP-07` Tạo cấu trúc thư mục dự án (`lib/features/`, `lib/core/`, `lib/shared/`)
+### 🔧 Giai đoạn 0 — Cài đặt dự án (hoàn tất)
+- [x] `SETUP-01` Khởi tạo Flutter project (`flutter create mhx_attendance`)
+- [x] `SETUP-02` Firebase project `mhx-attendance-dev` (Auth Google, Firestore, FCM)
+- [x] `SETUP-03` `flutterfire configure` — Android + Windows + (IOS + WEB)  (`google-services.json` local)
+- [x] `SETUP-04` Packages: Firebase, Riverpod, go_router, QR/PDF/Excel
+- [x] `SETUP-05` Firebase Emulator + `firestore.rules` / `functions/`
+- [x] `SETUP-06` GitHub Actions CI (`flutter analyze`, `flutter test`)
+- [x] `SETUP-07` Cấu trúc `lib/core/`, `lib/features/`, `lib/shared/`
+
+> Chi tiết: [SETUP.md](SETUP.md)
 
 ---
 
